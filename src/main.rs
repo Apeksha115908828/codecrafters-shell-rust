@@ -46,6 +46,27 @@ fn main() {
                     println!("{}: not found", args[1]);
                 }
             }
+        } else if input.trim().starts_with("pwd") {
+            let current_dir = std::env::current_dir().unwrap();
+            println!("{}", current_dir.display());
+        } else if input.trim().starts_with("cd") {
+            let args :Vec<&str> = input.split_whitespace().collect();
+            if args.len() == 1 {
+                let home = std::env::var("HOME").unwrap();
+                std::env::set_current_dir(home).unwrap();
+            } else {
+                if args[1].starts_with("./") {
+                    let current_dir = std::env::current_dir().unwrap();
+                    let new_dir = format!("{}/{}", current_dir.display(), args[1]);
+                    if let Err(_) = std::env::set_current_dir(new_dir) {
+                        println!("cd: {}: No such file or directory", args[1]);
+                    }
+                } else {
+                    if let Err(_) = std::env::set_current_dir(args[1]) {
+                        println!("cd: {}: No such file or directory", args[1]);
+                    }
+                }
+            }
         } else {
             println!("{}: command not found", input.trim());
         }
