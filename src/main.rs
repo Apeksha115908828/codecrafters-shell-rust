@@ -10,8 +10,12 @@ fn main() {
     let stdin = io::stdin();
     // let stdout = io::stdout();
     let mut input = String::new();
+    // implementing a REPL (Read-Eval-Print Loop).
     loop {
         stdin.read_line(&mut input).unwrap();
+        if input.trim() == "exit 0" {
+            return;
+        }
         println!("{}: command not found", input.trim());
         input.clear();
         print!("$ ");
