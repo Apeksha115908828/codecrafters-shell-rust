@@ -16,7 +16,14 @@ fn main() {
         if input.trim() == "exit 0" {
             return;
         }
-        println!("{}: command not found", input.trim());
+        if input.trim().contains("echo") {
+            let args :Vec<&str> = input.split_whitespace().collect();
+            println!("{}", args[1..].join(" "));
+            // println!("{}", args[1]);
+        } else {
+            println!("{}: command not found", input.trim());
+        }
+        
         input.clear();
         print!("$ ");
         io::stdout().flush().unwrap();
