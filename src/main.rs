@@ -19,7 +19,7 @@ fn main() {
     // Wait for user input
     let stdin = io::stdin();
     let path_var = std::env::var("PATH").unwrap();
-    let split_paths :Vec<&str> = path_var.split(":").collect();
+    // let split_paths :Vec<&str> = path_var.split(":").collect();
     // let stdout = io::stdout();
     let mut input = String::new();
     let builtins = vec!["echo", "type", "exit", "pwd", "cd"];
@@ -30,8 +30,25 @@ fn main() {
             return;
         }
         if input.trim().starts_with("echo") {
-            let args :Vec<&str> = input.split_whitespace().collect();
-            println!("{}", args[1..].join(" "));
+            // println!("{}", input.trim().replace("echo", "").trim());
+            input = input.trim().replace("echo", "").trim().to_string();
+            if input.contains("'") {
+                let args_1 = input.replace("'", "");
+                println!("{}", args_1);
+            } else {
+                let args :Vec<&str> = input.split_whitespace().collect();
+                println!("{}", args.join(" "));
+                // println!("{}", input);
+            }
+            // let args :Vec<&str> = input.split_whitespace().collect();
+            // // 
+            // if args[1].contains("'") {
+            //     let args_1 = args[1].replace("'", "");
+            //     println!("{}", args_1);
+            // } else {
+            //     println!("{}", args[1..].join(" "));
+            // }
+            // println!("{}", args[1..].join(" "));
             // println!("{}", args[1]);
         } else if input.trim().starts_with("type") {
             let args :Vec<&str> = input.split_whitespace().collect();
