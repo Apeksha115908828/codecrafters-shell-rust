@@ -1,6 +1,16 @@
 #[allow(unused_imports)]
 use std::io::{self, Write};
-
+fn find_exe(name: &str) -> Option<std::path::PathBuf> {
+    if let Ok(paths) = std::env::var("PATH") {
+        for path in std::env::split_paths(&paths) {
+            let exe_path = path.join(name);
+            if exe_path.is_file() {
+                return Some(exe_path);
+            }
+        }
+    }
+    None
+}
 fn main() {
     // Uncomment this block to pass the first stage
     print!("$ ");
@@ -76,7 +86,40 @@ fn main() {
                 }
             }
         } else {
-            println!("{}: command not found", input.trim());
+            let args :Vec<&str> = input.split_whitespace().collect();
+            
+            // let mut cmd = std::process::Command::new(args[0]);
+            // let split = &mut path_var.split(':');
+            // let mut exe_path_final = None;
+            // let mut found = false;
+            // for path in std::env::split_paths(&path_var) {
+            // for path in split_paths {
+                // let exe_path = path.to_string() + "/" + args[0];
+                // let exe_path = path.join(args[0]);
+                // if exe_path.is_file() {
+                //     exe_path_final = Some(exe_path);
+                //     found = true;
+                    // return Some(exe_path);
+            //     }
+            // }
+            if let Some(exe_path_final) = find_exe(args[0]) {
+                // println!("{} ", exe_path_final);
+                // let Some(exe_path_final_1) = exe_path_final;
+                let args_1 = &args[1..];
+                std::process::Command::new(exe_path_final).args(args_1).status()
+                .expect("failed to execute process");
+            // if let Some(path) =
+            //     split.find(|path| std::fs::metadata(format!("{}/{}", path, args[0])).is_ok())
+            // {
+            //     let args_1 = args[1..].to_vec();
+            //     println!("came here {} {} {}", args_1.join(" "), path, args[0]);
+                
+            //     // std::env::execute_command(&mut command , args[1..]);
+            //     std::process::Command::new(path + args[0]).args(args_1).status()
+            //     .expect("failed to execute process");
+            } else {
+               println!("{}: command not found", input.trim());
+            }
         }
         
         input.clear();
