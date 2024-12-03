@@ -79,6 +79,9 @@ fn main() {
                     if let Err(_) = std::env::set_current_dir(new_dir) {
                         println!("cd: {}: No such file or directory", args[1]);
                     }
+                } else if args[1].starts_with("~") {
+                    let home = std::env::var("HOME").unwrap();
+                    std::env::set_current_dir(home).unwrap();
                 } else {
                     if let Err(_) = std::env::set_current_dir(args[1]) {
                         println!("cd: {}: No such file or directory", args[1]);
