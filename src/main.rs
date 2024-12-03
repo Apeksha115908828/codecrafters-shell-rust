@@ -22,7 +22,7 @@ fn main() {
     let split_paths :Vec<&str> = path_var.split(":").collect();
     // let stdout = io::stdout();
     let mut input = String::new();
-    let builtins = vec!["echo", "type", "exit"];
+    let builtins = vec!["echo", "type", "exit", "pwd", "cd"];
     // implementing a REPL (Read-Eval-Print Loop).
     loop {
         stdin.read_line(&mut input).unwrap();
